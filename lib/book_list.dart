@@ -117,7 +117,7 @@ class _BookListPageState extends State<BookListPage> {
                     ),
                   )
                 : widget.fromLocation == 0
-                    ? fromSearch(bookProvider.bookData)
+                    ? fromSearch(bookProvider.bookList)
                     : fromOther(bookProvider.mostBookData),
           ),
         ],
@@ -126,14 +126,14 @@ class _BookListPageState extends State<BookListPage> {
   }
 }
 
-Widget fromSearch(books data) {
+Widget fromSearch(List<Docs> data) {
   final f = DateFormat('yyyy-MM-dd hh:mm');
 
   return ListView.builder(
     controller: scrollController,
     physics: const ScrollPhysics(),
     shrinkWrap: true,
-    itemCount: data.response?.docs?.length,
+    itemCount: data.length,
     itemBuilder: (ctx, i) {
       return Column(
         children: [
@@ -145,14 +145,14 @@ Widget fromSearch(books data) {
                 ListTile(
                   title: Text(
                     overflow: TextOverflow.ellipsis,
-                    data.response?.docs?[i].headline!.main ?? '-',
+                    data[i].headline!.main ?? '-',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  subtitle: Text(f.format(
-                      DateTime.parse(data.response?.docs?[i].pubDate ?? '-'))),
+                  subtitle:
+                      Text(f.format(DateTime.parse(data[i].pubDate ?? '-'))),
                 ),
                 const Divider(),
               ],

@@ -11,12 +11,14 @@ class BookDataProvider with ChangeNotifier {
   MostBook mostBookData = MostBook();
   bool loading = false;
   String? position;
+  List<Docs> bookList = [];
 
   getBookData(context, String searchWord, int fromLocation, int page) async {
     loading = true;
     switch (fromLocation) {
       case 0:
         bookData = await fetchSearch(context, searchWord, page);
+        bookList.addAll(bookData.response!.docs ?? []);
         break;
       case 1:
         mostBookData = await fetchMostView(context, '');
